@@ -21,8 +21,8 @@ public class GameController : MonoBehaviour {
         int maxTilesY = Mathf.FloorToInt(GameSettings.cameraSize / GameSettings.gridUnit);
         int maxTilesX = maxTilesY * Screen.width / Screen.height;
 
-        int randomY = Random.Range(-maxTilesY, maxTilesY + 1);
-        int randomX = Random.Range(-maxTilesX, maxTilesX + 1);
+        float randomY = Random.Range(-maxTilesY, maxTilesY + 1);
+        float randomX = Random.Range(-maxTilesX, maxTilesX + 1);
 
         return new Vector3(randomX, randomY) * GameSettings.gridUnit;
     }
