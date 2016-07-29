@@ -39,7 +39,6 @@ public class GameController : MonoBehaviour {
     {
         playerManager.Kill(player);
         ScoreTracker.SaveScore(GameSettings.difficulty, player.currentScore);
-        // TODO: Handle death stuff
         soundManager.PlaySound(deathSound);
         if (playerManager.allPlayersDead)
         {

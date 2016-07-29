@@ -7,7 +7,6 @@ public class ScoreTextController : MonoBehaviour {
 
     void Update()
     {
-        // TODO: Might change because of PlayerManager.players
         GetComponent<Text>().text = player.currentScore.ToString();
     }
 }
