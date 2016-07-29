@@ -142,6 +142,11 @@ public class Player : MonoBehaviour {
     void IncreaseBody(Direction dir)
     {
         Vector3 newHeadPos = head.position + DirectionToVector(currentDirection) * GameSettings.gridUnit;
+
+        // Fixes #2 - This makes sure there are no floating point errors
+        newHeadPos.x = Mathf.Round(newHeadPos.x / GameSettings.gridUnit) * GameSettings.gridUnit;
+        newHeadPos.y = Mathf.Round(newHeadPos.y / GameSettings.gridUnit) * GameSettings.gridUnit;
+
         GameObject neckObj = Instantiate(bodyPart, newHeadPos, Quaternion.identity) as GameObject;
         Transform neck = neckObj.transform;
 
