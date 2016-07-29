@@ -2,15 +2,49 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System;
+
+using Random = UnityEngine.Random;
 
 public class FruitManager : MonoBehaviour {
 
-    public Fruit fruit;
+    [Serializable]
+    public struct RarityProb
+    {
+        public Fruit.Rarity rarity;
+        public float relativeProb;
+    }
+
+    public Fruit[] fruits;
+    public RarityProb[] rarityProbs;
+
     private List<Fruit> allFruits = new List<Fruit>();
+
+    Fruit GetRandomFruitType()
+    {
+        float rand = Random.Range(0, rarityProbs.Sum(f => f.relativeProb));
+        Fruit.Rarity rarity = Fruit.Rarity.Common;
+
+        float i = 0;
+        foreach (RarityProb rp in rarityProbs)
+        {
+            i += rp.relativeProb;
+            if (i >= rand)
+            {
+                rarity = rp.rarity;
+                break;
+            }
+        }
+
+        Fruit[] possible = fruits.Where(f => f.rarity == rarity).ToArray();
+
+        return possible[Random.Range(0, possible.Length)];
+    }
 
     public void GenerateFruit(Vector3 pos)
     {
-        Fruit newFruit = Instantiate(fruit, pos, Quaternion.identity) as Fruit;
+        Fruit randFruit = GetRandomFruitType();
+        Fruit newFruit = Instantiate(randFruit, pos, Quaternion.identity) as Fruit;
         allFruits.Add(newFruit);
     }
 
