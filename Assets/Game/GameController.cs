@@ -11,6 +11,21 @@ public class GameController : MonoBehaviour {
     public SoundManager soundManager;
     public FruitManager fruitManager;
 
+    private int maxTilesY
+    {
+        get { return Mathf.FloorToInt(GameSettings.cameraSize / GameSettings.gridUnit); }
+    }
+
+    private int maxTilesX
+    {
+        get { return maxTilesY * Screen.width / Screen.height; }
+    }
+
+    private bool noFreePositions
+    {
+        get { return playerManager.GetAllPlayersOccupiedBlocks().Count() >= (maxTilesX * 2 + maxTilesY + 2); }
+    }
+
     void Start()
     {
         NewFruit();
@@ -18,9 +33,6 @@ public class GameController : MonoBehaviour {
 
     Vector3 GetRandomSuitablePosition()
     {
-        int maxTilesY = Mathf.FloorToInt(GameSettings.cameraSize / GameSettings.gridUnit);
-        int maxTilesX = maxTilesY * Screen.width / Screen.height;
-
         float randomY = Random.Range(-maxTilesY, maxTilesY + 1);
         float randomX = Random.Range(-maxTilesX, maxTilesX + 1);
 
@@ -60,6 +72,12 @@ public class GameController : MonoBehaviour {
 
     public void NewFruit()
     {
+        // Fixes #3
+        if (noFreePositions)
+        {
+            EndGame();
+        }
+
         Vector3 pos;
 
         do pos = GetRandomSuitablePosition();
